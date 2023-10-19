@@ -1,0 +1,100 @@
+:root {
+    --width: 70px;
+    --height: 100%;
+    --sb-bg-color: white;
+    --ct-bg-color: rgba(241, 241, 241, 0.466);
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+}
+
+.sidebar {
+    width: var(--width);
+    height: var(--height);
+    background-color: var(--sb-bg-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.sidebar .sidebar-logo {
+    margin-top: 30px;
+    margin-left: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.sidebar .sidebar-logo a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+}
+
+.sidebar .menu-options {
+    width: 100%;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+}
+
+.sidebar .menu-options li {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 5vh;
+}
+
+.sidebar .menu-options li a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}
+
+.sidebar .menu-options li a img {
+    margin-left: 10px;
+}
+
+.sidebar .menu-options li a span, .sidebar .sidebar-logo span {
+    visibility: hidden;
+    margin-left: 10px;
+}
+
+.sidebar .menu-options li a:hover {
+    background-color: aliceblue;
+}
+
+.sidebar:hover {
+    --width: 180px;
+}
+
+.sidebar:hover > .sidebar-logo span, .sidebar:hover > .menu-options li a span {
+    visibility: visible;
+}
+
+.content {
+    width: calc(100% - var(--width));
+    height: var(--height);
+    background-color: var(--ct-bg-color);
+}

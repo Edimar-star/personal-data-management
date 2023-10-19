@@ -1,0 +1,13 @@
+.row {
+    margin: 0px;
+    padding: 0px;
+}
+
+.content form {
+    height: 100%;
+    padding: 20px;
+}
+
+.content form h3 {
+    text-align: center;
+}
