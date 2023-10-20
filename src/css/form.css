@@ -23,8 +23,8 @@
     border-radius: 5px;
 }
 
-#button{
-    background-color: #457B9D;
-    color: white;
-    border: #457B9D;
+button{
+    background-color: #457B9D !important;
+    color: white !important;
+    border: #457B9D !important;
 }

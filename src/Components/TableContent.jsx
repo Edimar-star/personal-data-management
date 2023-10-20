@@ -5,7 +5,6 @@ const TableContent = ({ headValues, data, setEditPerson }) => {
         e.preventDefault();
         setEditPerson(user);
     };
-
     
     return (
         <div className="container p-3">

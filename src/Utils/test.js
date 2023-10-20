@@ -9,7 +9,7 @@ export const users = [
         gender: "Masculino",
         email: "john.doe@example.com",
         phone: "1234567890",
-        picture: "user1.jpg",
+        picture: "https://wallpapers-clan.com/wp-content/uploads/2023/05/cool-pfp-02.jpg",
     },
     {
         documentType: "Cédula",
@@ -21,7 +21,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://media.tenor.com/x0MguL74yrsAAAAC/anime-matching-pfp-matching-pfp.gif",
     },
     {
         documentType: "Cédula",
@@ -33,7 +33,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://www.mintface.xyz/content/images/2021/08/QmTndiF423kjdXsNzsip1QQkBQqDuzDhJnGuJAXtv4XXiZ-1.png",
     },
     {
         documentType: "Cédula",
@@ -45,7 +45,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://i.redd.it/3w1cf34b6yq21.png",
     },
     {
         documentType: "Cédula",
@@ -57,7 +57,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://tr.rbxcdn.com/6dfea7307dbe4bebfc402de5b0809f37/420/420/Hat/Png",
     },
     {
         documentType: "Cédula",
@@ -69,7 +69,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://wallpapers-clan.com/wp-content/uploads/2022/05/meme-pfp-02.jpg",
     },
     {
         documentType: "Cédula",
@@ -81,7 +81,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://rajueditor.com/wp-content/uploads/2023/08/Goofy-Ahh-Pictures-1024x1024.jpg",
     },
     {
         documentType: "Cédula",
@@ -93,7 +93,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://tr.rbxcdn.com/27c1a583e97f72a7f5006ec635d44f01/420/420/Hat/Png",
     },
     {
         documentType: "Cédula",
@@ -105,7 +105,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://i.pinimg.com/736x/69/63/a2/6963a2ffd2163316a212cb553969fc9b.jpg",
     },
     {
         documentType: "Cédula",
@@ -117,8 +117,7 @@ export const users = [
         gender: "Femenino",
         email: "jane.smith@example.com",
         phone: "9876543210",
-        picture: "user2.jpg",
+        picture: "https://i.pinimg.com/474x/5c/8b/18/5c8b18a1d95fce3c7740bed1a49fd7fd.jpg",
     },
 ];
 
-console.log(users);
