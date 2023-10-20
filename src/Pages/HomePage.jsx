@@ -2,7 +2,7 @@
 const HomePersonPage = () => {
     return (
         <main>
-            <section className='content'></section>
+            hola
         </main>
     )
 }

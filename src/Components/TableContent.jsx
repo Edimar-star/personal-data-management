@@ -30,7 +30,6 @@ const TableContent = ({ headValues, data, setEditPerson }) => {
                             <td>{user.gender}</td>
                             <td>{user.email}</td>
                             <td>{user.phone}</td>
-                            <td>{user.picture}</td>
                         </tr>
                     ))}
                 </tbody>

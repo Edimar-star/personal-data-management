@@ -37,7 +37,6 @@ const EditPersonPage = () => {
                             "Genero",
                             "Email",
                             "Celular",
-                            "Imagen",
                         ]}
                         data={users}
                         setEditPerson={setEditPerson}
