@@ -1,0 +1,21 @@
+table {
+  border-collapse: separate;
+  border-spacing: 0 15px;
+  font-size: 0.85em;
+}
+
+th {
+  background-color: #f9fcff !important;
+  border: none;
+  color: #9ea8b2;
+}
+
+
+td {
+  background-color: white !important;
+  padding: 5px;
+}
+
+td:hover {
+  cursor: pointer;
+}

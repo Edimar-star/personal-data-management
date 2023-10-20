@@ -1,9 +1,7 @@
-import Sidebar from '../components/sidebar'
 
-const LogsPersonPage = ({}) => {
+const LogsPersonPage = () => {
     return (
         <main>
-            <Sidebar />
             <section className='content'></section>
         </main>
     )

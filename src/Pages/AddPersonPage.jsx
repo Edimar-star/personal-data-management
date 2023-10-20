@@ -1,11 +1,8 @@
-import Sidebar from '../components/sidebar'
-import Form from '../components/form'
-import '../css/addPerson.css'
+import Form from '../Components/Form'
 
-const AddPersonPage = ({}) => {
+const AddPersonPage = () => {
     return (
         <main>
-            <Sidebar />
             <section className='content'>
                 <Form />
             </section>
