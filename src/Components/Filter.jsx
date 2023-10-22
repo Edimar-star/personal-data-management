@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../CSS/filter.css";
 
-const Filter = function () {
+const Filter = function ({ applyFilters }) {
     const [selectedFilters, setSelectedFilters] = useState([]);
     const [newFilter, setNewFilter] = useState({ property: "", value: "" });
     const [inputValue, setInputValue] = useState(""); // Single input value
@@ -38,7 +38,7 @@ const Filter = function () {
         setSelectedFilters(updatedFilters);
     };
 
-    const handleApplyFilters = () => {};
+    const handleApplyFilters = ({}) => {};
 
     return (
         <div>
@@ -54,10 +54,7 @@ const Filter = function () {
                         className="d-flex align-items-center justify-content-center me-5 mt-4"
                         key={index}
                     >
-                        <p
-                            id="click"
-                            onClick={() => removeFilter(index)}
-                        >
+                        <p id="click" onClick={() => removeFilter(index)}>
                             {filter.property}: {filter.value}
                         </p>
                     </div>
