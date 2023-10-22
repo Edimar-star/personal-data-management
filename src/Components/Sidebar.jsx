@@ -4,7 +4,7 @@ import { useState } from "react";
 const Sidebar = ({ setScreen }) => {
     const options = [
         { name: "Add", icon: "bi bi-file-earmark-plus", screen: 1 },
-        { name: "Edit", icon: "bi bi-pen", screen: 2 },
+        { name: "records", icon: "bi bi-folder2", screen: 2 },
         { name: "Logs", icon: "bi bi-layout-text-window-reverse", screen: 3 },
     ];
 
@@ -29,7 +29,7 @@ const Sidebar = ({ setScreen }) => {
         >
             <div
                 className="d-flex align-items-center click"
-                onClick={(e) => changeScreen(e, 0)}
+                onClick={(e) => changeScreen(e, 2)}
             >
                 <img
                     src="/logoD.png"

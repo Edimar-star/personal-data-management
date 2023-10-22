@@ -1,0 +1,20 @@
+#filter{
+    background-color: white;
+    width: 97.5% !important;
+}
+
+#records{
+    margin-top: 2em !important;
+}
+
+#click{
+    cursor: pointer;
+    color: #457B9D !important;
+    font-size: 1.1em;
+}
+
+#click:hover{
+    cursor: pointer;
+    color: #E63946 !important;
+    font-size: 1.1em;
+}

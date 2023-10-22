@@ -214,16 +214,15 @@ const FormEdit = function ({ editPerson }) {
                         </div>
                     </div>
                 </div>
+                <button
+                    className="btn btn-outline-primary mt-5"
+                    type="submit"
+                    id="button"
+                    onClick={handleSubmit}
+                >
+                    Editar
+                </button>
             </div>
-
-            <button
-                className="btn btn-outline-primary mt-5"
-                type="submit"
-                id="button"
-                onClick={handleSubmit}
-            >
-                Editar
-            </button>
         </div>
     );
 };

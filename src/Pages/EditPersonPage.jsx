@@ -1,5 +1,6 @@
 import TableContent from "../Components/TableContent";
 import FormEdit from "../Components/FormEdit";
+import Filter from "../Components/Filter";
 import { users } from "../Utils/test";
 import { useState } from "react";
 
@@ -22,25 +23,30 @@ const EditPersonPage = () => {
                         <i className="bi bi-arrow-left"></i>
                     </button>
                     <FormEdit editPerson={editPerson}></FormEdit>
-
                 </section>
             ) : (
-                <section>
-                    <TableContent
-                        headValues={[
-                            "Tipo de documento",
-                            "No. Documento",
-                            "Primer nombre",
-                            "Segundo nombre",
-                            "Apellidos",
-                            "Fecha de nacimiento",
-                            "Genero",
-                            "Email",
-                            "Celular",
-                        ]}
-                        data={users}
-                        setEditPerson={setEditPerson}
-                    />
+                <section className="container" id="records">
+                    <div className="container">
+                        <div className="container">
+                            <Filter></Filter>
+                        </div>
+
+                        <TableContent
+                            headValues={[
+                                "Tipo de documento",
+                                "No. Documento",
+                                "Primer nombre",
+                                "Segundo nombre",
+                                "Apellidos",
+                                "Fecha de nacimiento",
+                                "Genero",
+                                "Email",
+                                "Celular",
+                            ]}
+                            data={users}
+                            setEditPerson={setEditPerson}
+                        />
+                    </div>
                 </section>
             )}
         </div>
