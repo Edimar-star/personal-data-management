@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../CSS/form.css"
+import "../CSS/form.css";
 
 const Form = () => {
     // Options
@@ -143,21 +143,23 @@ const Form = () => {
     };
 
     return (
-        <div className="container py-4 px-5" style={{marginTop:"0.45em"}}>
-            <h3>Añadir personas</h3>
-            <form onSubmit={handleSubmit} className="form-container mt-5" style={{fontSize:"0.9em"}}>
+        <div className="container py-4 px-5" style={{ marginTop: "0.45em" }}>
+            <h3>
+                <b>Añadir personas</b>
+            </h3>
+            <form
+                onSubmit={handleSubmit}
+                className="form-container mt-5"
+                style={{ fontSize: "0.9em" }}
+            >
                 {sections.map((section, index) => (
                     <div key={index} className="form-field">
-                        <label className="form-label">
-                            {section.label}
-                        </label>
+                        <label className="form-label">{section.label}</label>
                         {section.options ? ( // Select field
                             <select
                                 className="form-select"
                                 value={section.value}
-                                onChange={(e) =>
-                                    setChange(section, e.target)
-                                }
+                                onChange={(e) => setChange(section, e.target)}
                             >
                                 {section.options.map((option, index) => (
                                     <option key={index} value={option}>
@@ -168,9 +170,7 @@ const Form = () => {
                         ) : section.type === "file" ? ( // Image field
                             <input
                                 className="form-control"
-                                onChange={(e) =>
-                                    setChange(section, e.target)
-                                }
+                                onChange={(e) => setChange(section, e.target)}
                                 id={section.id}
                                 type="file"
                                 maxLength={section.maxlength}
@@ -183,9 +183,7 @@ const Form = () => {
                             <input
                                 className="form-control"
                                 value={section.value}
-                                onChange={(e) =>
-                                    setChange(section, e.target)
-                                }
+                                onChange={(e) => setChange(section, e.target)}
                                 id={section.id}
                                 type={section.type}
                                 maxLength={section.maxlength}
@@ -196,7 +194,11 @@ const Form = () => {
                         )}
                     </div>
                 ))}
-                <button className="btn btn-outline-primary mt-3" type="submit" id="button">
+                <button
+                    className="btn btn-outline-primary mt-3"
+                    type="submit"
+                    id="button"
+                >
                     Aceptar
                 </button>
             </form>
