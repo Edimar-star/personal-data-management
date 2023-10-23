@@ -37,7 +37,7 @@ const Sidebar = ({ setScreen }) => {
                     height={50}
                     width={50}
                 />
-                <h4 className="ms-2">PDM</h4>
+                <h4 className="ms-2 mt-2">PDM</h4>
             </div>
             <hr />
             <div className="mt-5 text-secondary ms-1">
