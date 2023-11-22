@@ -1,59 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TableContent from "../Components/TableContent";
 import FormEdit from "../Components/FormEdit";
 import Filter from "../Components/Filter";
-import { users } from "../Utils/test";
+import { getRequest } from "../Utils/requests";
 
 const EditPersonPage = () => {
     const usersTableSize = 10;
     const [editPerson, setEditPerson] = useState(false);
+    const [userSelected, setUserSelected] = useState({})
     const [page, setPage] = useState(1);
+    const [tableSize, setTableSize] = useState([])
+    const [totalPages, setTotalPages] = useState(0)
+    const [filters, setFilters] = useState({})
+    const [datosCargados, setDatosCargados] = useState(false)
 
-    const totalPages = Math.ceil(users.length / usersTableSize);
+    const init = async (page, payload) => {
+        const startIndex = (page - 1) * usersTableSize + 1
+        const endIndex = startIndex + usersTableSize - 1
+        const data = await getRequest(`/app/${startIndex}/${endIndex}`, payload)
+        if (typeof data !== "string") {
+            const users = data.current.users
+            setTotalPages(Math.ceil(data.current.total / usersTableSize))
+            setTableSize(users)
+            setPage(page)
+        }
+    }
 
-    const getTableSlice = () => {
-        const startIndex = (page - 1) * usersTableSize;
-        const endIndex = Math.min(startIndex + usersTableSize, users.length);
-        return users.slice(startIndex, endIndex);
-    };
+    useEffect(() => {
+        if (datosCargados) return;
 
-    const EditPerson = function (e) {
-        e.preventDefault();
-        setEditPerson(false);
-    };
+        init(1, {})
+        setDatosCargados(false)
+    }, [datosCargados])
 
     const loadNextPage = () => {
         if (page < totalPages) {
+            init(page + 1, filters)
             setPage(page + 1);
         }
     };
 
     const loadPreviousPage = () => {
         if (page > 1) {
+            init(page - 1, filters)
             setPage(page - 1);
         }
     };
-
-    const applyFilters = () => {
-        let filteredUsers = users; // Initialize with all users
-        
-        selectedFilters.forEach((filter) => {
-            filteredUsers = filteredUsers.filter((user) => {
-                // Implement your filtering logic here
-                if (filter.property === "gender") {
-                    return user.gender === filter.value;
-                }
-                if (filter.property === "documentType") {
-                    return user.documentType === filter.value;
-                }
-                // Add more filtering conditions for other properties
-                return true;
-            });
-        });
-        
-        setUsersTable(filteredUsers);
-    };
-    
 
     return (
         <div>
@@ -61,17 +53,18 @@ const EditPersonPage = () => {
                 <section className="container py-4 px-5">
                     <button
                         className="btn btn-primary px-5 mb-4 mt-1"
-                        onClick={(e) => EditPerson(e)}
+                        onClick={() => setEditPerson(false)}
                     >
                         <i className="bi bi-arrow-left"></i>
                     </button>
-                    <FormEdit editPerson={editPerson}></FormEdit>
+                    <FormEdit setTableSize={setTableSize} setEditPerson={setEditPerson} 
+                        users={tableSize} userSelected={userSelected} />
                 </section>
             ) : (
                 <section className="container" id="records">
                     <div className="container">
                         <div className="container">
-                            <Filter applyFilters={applyFilters}></Filter>
+                            <Filter setFilters={setFilters} init={init} />
                         </div>
                         <TableContent
                             headValues={[
@@ -85,20 +78,22 @@ const EditPersonPage = () => {
                                 "Email",
                                 "Celular",
                             ]}
-                            data={getTableSlice()}
+                            data={tableSize}
                             setEditPerson={setEditPerson}
+                            setUserSelected={setUserSelected}
                         />
-                        <div className="container pb-5">
+                        <div className="row justify-content-center">
                             <button
-                                className="btn btn-primary h-100"
+                                className="btn btn-primary col-1"
                                 onClick={loadPreviousPage}
                                 disabled={page === 1}
                             >
                                 <i className="bi bi-arrow-left"></i>
                             </button>
                             <button
-                                className="btn btn-primary h-100 ms-2"
+                                className="btn btn-primary col-1"
                                 onClick={loadNextPage}
+                                style={{ marginLeft: "5px" }}
                                 disabled={page === totalPages}
                             >
                                 <i className="bi bi-arrow-right"></i>

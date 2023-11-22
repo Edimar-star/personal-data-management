@@ -2,7 +2,7 @@
 const HomePersonPage = () => {
     return (
         <main>
-            hola
+            <button></button>
         </main>
     )
 }

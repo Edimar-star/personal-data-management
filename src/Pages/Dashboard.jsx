@@ -3,18 +3,16 @@ import AddPersonPage from "./AddPersonPage";
 import EditPersonPage from "./EditPersonPage";
 import HomePage from "./HomePage";
 import LogsPage from "./LogsPage";
-import "../css/dashboard.css";
+import "../CSS/dashboard.css";
 import { useState } from "react";
 
 const Dashboard = () => {
+    const [screen, setScreen] = useState(0);
     const screens = [
-        <HomePage></HomePage>,
-        <AddPersonPage></AddPersonPage>,
         <EditPersonPage></EditPersonPage>,
+        <AddPersonPage setScreen={setScreen}></AddPersonPage>,
         <LogsPage></LogsPage>,
     ];
-
-    const [screen, setScreen] = useState(0);
 
     return (
         <div>

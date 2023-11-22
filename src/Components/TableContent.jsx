@@ -1,9 +1,21 @@
+import { useEffect, useState } from "react";
 import "../CSS/table.css";
+import { getRequest } from "../Utils/requests";
 
-const TableContent = ({ headValues, data, setEditPerson }) => {
-    const EditPerson = function (e, user) {
+const TableContent = ({ headValues, data, setEditPerson, setUserSelected }) => {
+    const [users, setUsers] = useState(data)
+
+    useEffect(() => {
+        setUsers(data)
+    }, [data])
+
+    const EditPerson = async function (e, user) {
         e.preventDefault();
-        setEditPerson(user);
+        setEditPerson(true)
+        const image = await getRequest(`/app/${user._id}`, {})
+        const value = Object.assign({}, user)
+        if (typeof image != "string") { value.picture = image.current.image }
+        setUserSelected(value);
     };
 
     return (
@@ -19,10 +31,10 @@ const TableContent = ({ headValues, data, setEditPerson }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((user, index) => (
+                    {users.map((user, index) => (
                         <tr key={index} onClick={(e) => EditPerson(e, user)}>
                             <td>{user.documentType}</td>
-                            <td>{user.numberDocument}</td>
+                            <td>{user._id}</td>
                             <td>{user.firstName}</td>
                             <td>{user.middleName}</td>
                             <td>{user.lastNames}</td>

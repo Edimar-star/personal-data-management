@@ -1,28 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../CSS/formEdit.css";
+import { deleteRequest, putRequest } from '../Utils/requests'
 
-const FormEdit = function ({ editPerson }) {
+const FormEdit = function ({ userSelected, users, setTableSize, setEditPerson }) {
     const typeDocument = ["Tarjeta de identidad", "Cédula"];
-    const genderOptions = [
-        "Masculino",
-        "Femenino",
-        "No Binario",
-        "Prefiero no reportarlo",
-    ];
+    const genderOptions = ["Masculino", "Femenino", "No Binario", "Prefiero no reportarlo"];
 
     // Fields
-    const [documentType, setDocumentType] = useState(editPerson.documentType);
-    const [numberDocument, setNumberDocument] = useState(
-        editPerson.numberDocument
-    );
-    const [firstName, setFirstName] = useState(editPerson.firstName);
-    const [middleName, setMiddleName] = useState(editPerson.middleName);
-    const [lastNames, setLastNames] = useState(editPerson.lastNames);
-    const [bornDate, setBornDate] = useState(editPerson.bornDate);
-    const [gender, setGender] = useState(editPerson.gender);
-    const [email, setEmail] = useState(editPerson.email);
-    const [phone, setPhone] = useState(editPerson.phone);
-    const [picture, setPicture] = useState(editPerson.picture);
+    const [documentType, setDocumentType] = useState(userSelected.documentType);
+    const [numberDocument, setNumberDocument] = useState(userSelected._id);
+    const [firstName, setFirstName] = useState(userSelected.firstName);
+    const [middleName, setMiddleName] = useState(userSelected.middleName);
+    const [lastNames, setLastNames] = useState(userSelected.lastNames);
+    const [bornDate, setBornDate] = useState(userSelected.bornDate);
+    const [gender, setGender] = useState(userSelected.gender);
+    const [email, setEmail] = useState(userSelected.email);
+    const [phone, setPhone] = useState(userSelected.phone);
+    const [picture, setPicture] = useState(userSelected.picture);
+
+    useEffect(() => {
+        setDocumentType(userSelected.documentType);
+        setNumberDocument(userSelected._id);
+        setFirstName(userSelected.firstName);
+        setMiddleName(userSelected.middleName);
+        setLastNames(userSelected.lastNames);
+        setBornDate(userSelected.bornDate);
+        setGender(userSelected.gender);
+        setEmail(userSelected.email);
+        setPhone(userSelected.phone);
+        setPicture(userSelected.picture);
+    }, [userSelected])
 
     const setChange = (target) => {
         const MAXIMO_TAMANIO_BYTES = 2000000; // 1MB = 1 millón de bytes
@@ -46,24 +53,37 @@ const FormEdit = function ({ editPerson }) {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log({
-            documentType,
-            numberDocument,
-            firstName,
-            middleName,
-            lastNames,
-            bornDate,
-            gender,
-            email,
-            phone,
-            picture,
-        });
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const payload = {
+            user: {
+                documentType, _id: numberDocument, firstName,
+                middleName, lastNames, bornDate, gender,
+                email, phone
+            }, 
+            picture: {
+                _id: numberDocument,
+                image: picture
+            }
+        }
+        const data = await putRequest('/app', payload)
+        if (data != "string") {
+            setTableSize(users.map(user => user._id == userSelected._id ? data.current : user))
+            setEditPerson(false)
+        }
     };
 
+    const deleteUser = async (e) => {
+        e.preventDefault()
+        const data = await deleteRequest(`/app/${userSelected._id}`)
+        if (data != "string") {
+            setTableSize(users.filter(user => user._id !== userSelected._id))
+            setEditPerson(false)
+        }
+    }
+
     return (
-        <div style={{ marginTop: "0.45em" }}>
+        <form onSubmit={handleSubmit} style={{ marginTop: "0.45em" }}>
             <h3>Editar perfil</h3>
             <div className="row mt-3" style={{ fontSize: "0.9em" }}>
                 <div className="form-field">
@@ -85,11 +105,7 @@ const FormEdit = function ({ editPerson }) {
                     <input
                         className="form-control"
                         value={numberDocument}
-                        onChange={(e) => setNumberDocument(e.target.value)}
-                        type="text"
-                        maxLength="10"
-                        pattern="[0-9]{10}"
-                        required
+                        disabled
                     />
                 </div>
                 <div className="form-field">
@@ -200,8 +216,8 @@ const FormEdit = function ({ editPerson }) {
                                     <input
                                         type="file"
                                         id="picture"
+                                        namw="picture"
                                         accept="image/*"
-                                        required
                                         style={{ display: "none" }}
                                         onChange={(e) => setChange(e.target)}
                                     />
@@ -214,16 +230,26 @@ const FormEdit = function ({ editPerson }) {
                         </div>
                     </div>
                 </div>
-                <button
-                    className="btn btn-outline-primary mt-5"
-                    type="submit"
-                    id="button"
-                    onClick={handleSubmit}
-                >
-                    Editar
-                </button>
+                <div className="row justify-content-center" style={{ marginTop: "25px" }}>
+                    <button
+                        className="btn btn-primary col-2"
+                        type="submit"
+                        id="button"
+                        style={{marginRight: "20px"}}
+                    >
+                        Editar
+                    </button>
+                    <button
+                        className="btn btn-danger col-2"
+                        type="submit"
+                        style={{marginLeft: "20px"}}
+                        onClick={deleteUser}
+                    >
+                        Eliminar
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     );
 };
 

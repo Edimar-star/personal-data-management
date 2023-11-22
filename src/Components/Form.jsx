@@ -1,15 +1,11 @@
 import { useState } from "react";
 import "../CSS/form.css";
+import { postRequest } from "../Utils/requests";
 
-const Form = () => {
+const Form = ({ setScreen }) => {
     // Options
     const typeDocument = ["Tarjeta de identidad", "Cédula"];
-    const genderOptions = [
-        "Masculino",
-        "Femenino",
-        "No Binario",
-        "Prefiero no reportarlo",
-    ];
+    const genderOptions = ["Masculino", "Femenino", "No Binario", "Prefiero no reportarlo"];
 
     // Fields
     const [documentType, setDocumentType] = useState(typeDocument[0]);
@@ -119,27 +115,35 @@ const Form = () => {
                 alert(`El tamaño máximo es ${tamanioEnMb} MB`);
                 target.value = "";
             } else {
-                section.setValue(target.files[0]);
+                // Create a data URL from the selected image
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setPicture(e.target.result);
+                };
+                reader.readAsDataURL(archivo);
             }
         } else {
             section.setValue(target.value);
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({
-            documentType,
-            numberDocument,
-            firstName,
-            middleName,
-            lastNames,
-            bornDate,
-            gender,
-            email,
-            phone,
-            picture,
-        });
+        const payload = {
+            user: {
+                documentType, _id: numberDocument, firstName,
+                middleName, lastNames, bornDate, gender,
+                email, phone
+            }, 
+            picture: {
+                _id: numberDocument,
+                image: picture
+            }
+        }
+        const data = await postRequest('/app', payload)
+        if (data != "string") {
+            setScreen(0)
+        }
     };
 
     return (
@@ -194,13 +198,15 @@ const Form = () => {
                         )}
                     </div>
                 ))}
-                <button
-                    className="btn btn-outline-primary mt-3"
-                    type="submit"
-                    id="button"
-                >
-                    Aceptar
-                </button>
+                <div className="container row justify-content-center" style={{ marginTop: "20px" }}>
+                    <button
+                        className="btn btn-primary col-2"
+                        type="submit"
+                        id="button"
+                    >
+                        Aceptar
+                    </button>
+                </div>
             </form>
         </div>
     );
