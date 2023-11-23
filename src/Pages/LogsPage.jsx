@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getRequest } from "../Utils/requests";
+import FilterLog from "../Components/FilterLog";
 
 const LogsPersonPage = () => {
     const usersTableSize = 10;
@@ -46,7 +47,8 @@ const LogsPersonPage = () => {
 
     return (
         <main>
-            <section className='content'>
+            <section className='content container' id="records">
+            <FilterLog setFilters={setFilters} init={init} />
                 <div className="p-3">
                     <table className="table custom-table table-hover table">
                         <thead>

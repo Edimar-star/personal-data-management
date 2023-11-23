@@ -58,7 +58,7 @@ const Filter = ({ setFilters, init }) => {
                 </h3>
             </div>
 
-            <div className="d-flex">
+            <div className="d-flex mb-3">
                 {Object.keys(selectedFilters).map((filter, index) => (
                     <div
                         className="d-flex align-items-center justify-content-center me-5 mt-4"
