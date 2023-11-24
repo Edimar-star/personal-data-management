@@ -1,49 +1,55 @@
 import React, { useState } from "react";
-import "../CSS/filter.css";
-import { cambiarFormatoFecha } from "../Utils/functions"
+import { getRequest } from "../Utils/requests";
 
-const Filter = ({ setFilters, init, properties, init_value, title }) => {
+const FilterLog = ({ setFilters, init }) => {
     const [selectedFilters, setSelectedFilters] = useState({});
-    const [newFilter, setNewFilter] = useState(init_value);
-    const [value, setValue] = useState("")
+    const [newFilter, setNewFilter] = useState("user_id");
+    const [value, setValue] = useState("");
+
+    const properties = {
+        "user_id": { key: "Usuario", type: "text", pattern: "[0-9]+" },
+        "date": { key: "Fecha", type: "date" },
+        "action": { key: "Acción", type: "text", pattern: "[a-zA-z]+" },
+        "description": { key: "Descripción", type: "text" },
+    };
 
     const handlePropertyChange = (e) => {
         const selectedProperty = e.target.value;
         setNewFilter(selectedProperty);
-        setValue("")
-        if (properties[selectedProperty].options) setValue(properties[selectedProperty].options[0])
+        setValue("");
     };
 
     const addFilter = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         if (newFilter && value.length > 0) {
-            selectedFilters[newFilter] = (properties[newFilter].type == "date") ? cambiarFormatoFecha(value) : value
+            selectedFilters[newFilter] = value;
             setSelectedFilters(selectedFilters);
-            setValue("")
-            const f = Object.keys(properties).filter(x => !Object.keys(selectedFilters).includes(x))[0]
-            if (properties[f].options) setValue(properties[f].options[0])
-            setNewFilter(f)
+            setValue("");
+            const f = Object.keys(properties).filter(
+                (x) => !Object.keys(selectedFilters).includes(x)
+            )[0];
+            setNewFilter(f);
         }
     };
 
     const removeFilter = (filter) => {
-        const values = {}
-        Object.keys(selectedFilters).forEach(sf => {
-            if (sf != filter) values[sf] = selectedFilters[sf]
-        })
-        setSelectedFilters(values)
+        const values = {};
+        Object.keys(selectedFilters).forEach((sf) => {
+            if (sf !== filter) values[sf] = selectedFilters[sf];
+        });
+        setSelectedFilters(values);
     };
 
     const handleApplyFilters = async () => {
-        setFilters(selectedFilters)
-        init(1, selectedFilters)
+        setFilters(selectedFilters);
+        init(1, selectedFilters);
     };
 
     return (
         <form onSubmit={addFilter}>
             <div>
                 <h3>
-                    <b>{title}</b>
+                    <b>Filtros</b>
                 </h3>
             </div>
 
@@ -66,7 +72,7 @@ const Filter = ({ setFilters, init, properties, init_value, title }) => {
                         value={newFilter}
                         onChange={handlePropertyChange}
                     >
-                        {Object.keys(properties).filter(x => !Object.keys(selectedFilters).includes(x)).map((property, index) => (
+                        {Object.keys(properties).map((property, index) => (
                             <option key={index} value={property}>
                                 {properties[property].key}
                             </option>
@@ -74,30 +80,15 @@ const Filter = ({ setFilters, init, properties, init_value, title }) => {
                     </select>
                 </div>
                 <div className="col-5">
-                    {properties[newFilter].options ? (
-                        <select
-                            className="form-select"
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                        >
-                            {properties[newFilter].options.map((option, index) => (
-                                <option key={index} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
-                    ) : (
-                        <input
-                            className="form-control"
-                            value={value}
-                            id="filter-input"
-                            onChange={(e) => setValue(e.target.value)}
-                            type={properties[newFilter].type}
-                            maxLength={properties[newFilter].maxlength}
-                            pattern={properties[newFilter].pattern}
-                            required
-                        />
-                    )}
+                    <input
+                        className="form-control"
+                        value={value}
+                        id="filter-input"
+                        onChange={(e) => setValue(e.target.value)}
+                        type={properties[newFilter].type}
+                        pattern={properties[newFilter].pattern}
+                        required
+                    />
                 </div>
                 <div className="col-3 d-flex justify-content-around">
                     <button
@@ -119,4 +110,4 @@ const Filter = ({ setFilters, init, properties, init_value, title }) => {
     );
 };
 
-export default Filter;
+export default FilterLog;
