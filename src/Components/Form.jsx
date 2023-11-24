@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "../CSS/form.css";
 import { postRequest } from "../Utils/requests";
+import { cambiarFormatoFecha, devolverFormatoFecha } from "../Utils/functions"
+import Swal from 'sweetalert2'
+import compress from 'compress-base64'
 
 const Form = ({ setScreen }) => {
     // Options
@@ -112,13 +115,22 @@ const Form = ({ setScreen }) => {
             const archivo = target.files[0];
             if (archivo.size > MAXIMO_TAMANIO_BYTES) {
                 const tamanioEnMb = MAXIMO_TAMANIO_BYTES / 1000000;
-                alert(`El tamaño máximo es ${tamanioEnMb} MB`);
+                const tam = archivo.size / 1000000;
+                Swal.fire(`El tamaño máximo es ${tamanioEnMb} MB y tu imagen pesa ${tam}`, '', 'error')
                 target.value = "";
             } else {
                 // Create a data URL from the selected image
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    setPicture(e.target.result);
+                    compress(e.target.result, {
+                        width: 200,
+                        type: 'image/png',
+                        max: 200,
+                        min: 20,
+                        quality: 0.8
+                    }).then(result => {
+                        setPicture(result);
+                    })
                 };
                 reader.readAsDataURL(archivo);
             }
@@ -131,9 +143,9 @@ const Form = ({ setScreen }) => {
         e.preventDefault();
         const payload = {
             user: {
-                documentType, _id: numberDocument, firstName,
-                middleName, lastNames, bornDate, gender,
-                email, phone
+                documentType, _id: numberDocument, firstName, middleName, 
+                lastNames, bornDate: cambiarFormatoFecha(bornDate), 
+                gender, email, phone
             }, 
             picture: {
                 _id: numberDocument,
@@ -142,8 +154,9 @@ const Form = ({ setScreen }) => {
         }
         const data = await postRequest('/app', payload)
         if (data != "string") {
-            setScreen(0)
-        }
+            return Swal.fire('Usuario creado', '', 'success').then(() => setScreen(0))
+        } 
+        Swal.fire({ icon: 'error', title: 'Oops...', text: data })
     };
 
     return (

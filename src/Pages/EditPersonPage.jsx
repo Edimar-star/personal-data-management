@@ -14,6 +14,18 @@ const EditPersonPage = () => {
     const [filters, setFilters] = useState({})
     const [datosCargados, setDatosCargados] = useState(false)
 
+    const properties = {
+        "_id": { key: "Numero de documento", type: "text", pattern: "[0-9]{10}" },
+        "documentType": { key: "Tipo de documento", options: ["Tarjeta de identidad", "Cédula"] },
+        "firstName": { key: "Primer nombre", type: "text", pattern: "[a-zA-z]+", maxlength: "30" },
+        "middleName": { key: "Segundo nombre", type: "text", pattern: "[a-zA-z]+", maxlength: "30" },
+        "lastNames": { key: "Apellidos", type: "text", pattern: "[a-zA-z]+", maxlength: "60" },
+        "bornDate": { key: "Fecha de nacimiento", type: "date" },
+        "gender": { key: "Genero", options: ["Masculino", "Femenino", "No Binario", "Prefiero no reportarlo"] },
+        "email": { key: "correo", type: "email" },
+        "phone": { key: "Telefono", type: "text", pattern: "[0-9]{10}" }
+    };
+
     const init = async (page, payload) => {
         const startIndex = (page - 1) * usersTableSize + 1
         const endIndex = startIndex + usersTableSize - 1
@@ -32,6 +44,10 @@ const EditPersonPage = () => {
         init(1, {})
         setDatosCargados(false)
     }, [datosCargados])
+
+    useEffect(() => {
+        setTableSize(tableSize)
+    }, [tableSize])
 
     const loadNextPage = () => {
         if (page < totalPages) {
@@ -64,7 +80,9 @@ const EditPersonPage = () => {
                 <section className="container" id="records">
                     <div className="container">
                         <div className="container">
-                            <Filter setFilters={setFilters} init={init} />
+                            <Filter setFilters={setFilters} init={init}
+                                    properties={properties} init_value={"_id"}
+                                    title={"Usuarios registrados"} />
                         </div>
                         <TableContent
                             headValues={[

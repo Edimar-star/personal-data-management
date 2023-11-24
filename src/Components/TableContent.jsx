@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../CSS/table.css";
 import { getRequest } from "../Utils/requests";
+import { devolverFormatoFecha } from '../Utils/functions'
 
 const TableContent = ({ headValues, data, setEditPerson, setUserSelected }) => {
     const [users, setUsers] = useState(data)
@@ -14,7 +15,8 @@ const TableContent = ({ headValues, data, setEditPerson, setUserSelected }) => {
         setEditPerson(true)
         const image = await getRequest(`/app/${user._id}`, {})
         const value = Object.assign({}, user)
-        if (typeof image != "string") { value.picture = image.current.image }
+        value.bornDate = devolverFormatoFecha(value.bornDate)
+        if (typeof image != "string") { value.picture = image.current.image.image }
         setUserSelected(value);
     };
 

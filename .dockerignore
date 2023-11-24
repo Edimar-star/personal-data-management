@@ -3,3 +3,5 @@ package-lock.json
 Dockerfile
 .gitignore
 README.md
+.env
+.example.env

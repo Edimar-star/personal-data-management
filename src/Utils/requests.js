@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getEnvironments } from "./envVariables"
+import { getEnvironments } from "./functions"
 const { VITE_APP_URL } = getEnvironments()
 
 export const getRequest = async (name, payload) => {

@@ -1,15 +1,13 @@
 import React from "react";
 import { useState } from "react";
 
+const options = [
+    { name: "records", icon: "bi bi-folder2", screen: 0 },
+    { name: "Add", icon: "bi bi-file-earmark-plus", screen: 1 },
+    { name: "Logs", icon: "bi bi-layout-text-window-reverse", screen: 2 },
+];
 const Sidebar = ({ setScreen }) => {
-    const options = [
-        { name: "records", icon: "bi bi-folder2", screen: 0 },
-        { name: "Add", icon: "bi bi-file-earmark-plus", screen: 1 },
-        { name: "Logs", icon: "bi bi-layout-text-window-reverse", screen: 2 },
-    ];
-
-    const [activeOption, setActiveOption] = useState(null);
-
+    const [activeOption, setActiveOption] = useState(options[0]);
     const changeScreen = (e, screen) => {
         setScreen(screen);
         setActiveOption(screen);
