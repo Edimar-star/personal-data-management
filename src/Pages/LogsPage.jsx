@@ -1,23 +1,31 @@
 import { useEffect, useState } from "react";
 import { getRequest } from "../Utils/requests";
+import TableContent from "../Components/TableContentTransaction";
+import Filter from "../Components/Filter";
 
 const LogsPersonPage = () => {
-    const usersTableSize = 10;
+    const logsTableSize = 10;
     const [logs, setLogs] = useState([])
     const [page, setPage] = useState(1);
     const [datosCargados, setDatosCargados] = useState(false)
     const [totalPages, setTotalPages] = useState(0)
     const [filters, setFilters] = useState({})
-    const headValues = ["Usuario", "fecha", "Accion", "Descripción"]
+
+    const properties = {
+        "user._id": { key: "Numero de documento", type: "text", pattern: "[0-9]{10}" },
+        "user.documentType": { key: "Tipo de documento", options: ["Tarjeta de identidad", "Cédula"] },
+        "date": { key: "Fecha", type: "date" },
+        "action": { key: "Acción", options: ["Escritura", "Lectura", "Actualización", "Eliminación"] },
+    };
 
     const init = async (page, filters) => {
-        const startIndex = (page - 1) * usersTableSize + 1
-        const endIndex = startIndex + usersTableSize - 1
+        const startIndex = (page - 1) * logsTableSize + 1
+        const endIndex = startIndex + logsTableSize - 1
         const data = await getRequest(`/log/${startIndex}/${endIndex}`, filters)
-        console.log(data)
+
         if (typeof data !== "string") {
             const logs = data.logs
-            setTotalPages(Math.ceil(data.total / usersTableSize))
+            setTotalPages(Math.ceil(data.total / logsTableSize))
             setLogs(logs)
             setPage(page)
         }
@@ -46,48 +54,43 @@ const LogsPersonPage = () => {
 
     return (
         <main>
-            <section className='content'>
-                <div className="p-3">
-                    <table className="table custom-table table-hover table">
-                        <thead>
-                            <tr>
-                                {headValues.map((value, key) => (
-                                    <th key={key} scope="col">
-                                        {value}
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {logs.map((log, index) => (
-                                <tr key={index}>
-                                    <td>{log.user_id}</td>
-                                    <td>{log.date}</td>
-                                    <td>{log.action}</td>
-                                    <td>{log.description}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+            <section className="container" id="records">
+                <div className="container">
+                    <div className="container">
+                        <Filter setFilters={setFilters} init={init}
+                                properties={properties} init_value={"user._id"}
+                                title={"Historial de logs"}></Filter>
+                    </div>
+                    <TableContent
+                        headValues={[
+                            "Tipo de documento",
+                            "Numero de documento",
+                            "Nombre",
+                            "Fecha",
+                            "Acción",
+                            "Descripción"
+                        ]}
+                        data={logs}
+                    />
+                    <div className="row justify-content-center">
+                        <button
+                            className="btn btn-primary col-1"
+                            onClick={loadPreviousPage}
+                            disabled={page === 1}
+                        >
+                            <i className="bi bi-arrow-left"></i>
+                        </button>
+                        <button
+                            className="btn btn-primary col-1"
+                            onClick={loadNextPage}
+                            style={{ marginLeft: "5px" }}
+                            disabled={page === totalPages}
+                        >
+                            <i className="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
             </section>
-            <div className="row justify-content-center">
-                <button
-                    className="btn btn-primary col-1"
-                    onClick={loadPreviousPage}
-                    disabled={page === 1}
-                >
-                    <i className="bi bi-arrow-left"></i>
-                </button>
-                <button
-                    className="btn btn-primary col-1"
-                    onClick={loadNextPage}
-                    style={{ marginLeft: "5px" }}
-                    disabled={page === totalPages}
-                >
-                    <i className="bi bi-arrow-right"></i>
-                </button>
-            </div>
         </main>
     )
 }

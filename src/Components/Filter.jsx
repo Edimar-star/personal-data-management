@@ -1,22 +1,11 @@
 import React, { useState } from "react";
 import "../CSS/filter.css";
+import { cambiarFormatoFecha } from "../Utils/functions"
 
-const Filter = ({ setFilters, init }) => {
+const Filter = ({ setFilters, init, properties, init_value, title }) => {
     const [selectedFilters, setSelectedFilters] = useState({});
-    const [newFilter, setNewFilter] = useState("_id");
+    const [newFilter, setNewFilter] = useState(init_value);
     const [value, setValue] = useState("")
-
-    const properties = {
-        "_id": { key: "Numero de documento", type: "text", pattern: "[0-9]{10}" },
-        "documentType": { key: "Tipo de documento", options: ["Tarjeta de identidad", "Cédula"] },
-        "firstName": { key: "Primer nombre", type: "text", pattern: "[a-zA-z]+", maxlength: "30" },
-        "middleName": { key: "Segundo nombre", type: "text", pattern: "[a-zA-z]+", maxlength: "30" },
-        "lastNames": { key: "Apellidos", type: "text", pattern: "[a-zA-z]+", maxlength: "60" },
-        "bornDate": { key: "Fecha de nacimiento", type: "date" },
-        "gender": { key: "Genero", options: ["Masculino", "Femenino", "No Binario", "Prefiero no reportarlo"] },
-        "email": { key: "correo", type: "email" },
-        "phone": { key: "Telefono", type: "text", pattern: "[0-9]{10}" }
-    };
 
     const handlePropertyChange = (e) => {
         const selectedProperty = e.target.value;
@@ -28,7 +17,7 @@ const Filter = ({ setFilters, init }) => {
     const addFilter = (e) => {
         e.preventDefault()
         if (newFilter && value.length > 0) {
-            selectedFilters[newFilter] = value
+            selectedFilters[newFilter] = (properties[newFilter].type == "date") ? cambiarFormatoFecha(value) : value
             setSelectedFilters(selectedFilters);
             setValue("")
             const f = Object.keys(properties).filter(x => !Object.keys(selectedFilters).includes(x))[0]
@@ -54,7 +43,7 @@ const Filter = ({ setFilters, init }) => {
         <form onSubmit={addFilter}>
             <div>
                 <h3>
-                    <b>Usuarios registrados</b>
+                    <b>{title}</b>
                 </h3>
             </div>
 

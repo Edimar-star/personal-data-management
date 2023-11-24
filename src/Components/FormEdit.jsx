@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import "../CSS/formEdit.css";
 import { deleteRequest, putRequest } from '../Utils/requests'
+import Swal from 'sweetalert2'
+import compress from 'compress-base64'
+import { cambiarFormatoFecha } from "../Utils/functions"
 
 const FormEdit = function ({ userSelected, users, setTableSize, setEditPerson }) {
     const typeDocument = ["Tarjeta de identidad", "Cédula"];
@@ -41,13 +44,22 @@ const FormEdit = function ({ userSelected, users, setTableSize, setEditPerson })
         const archivo = target.files[0];
         if (archivo.size > MAXIMO_TAMANIO_BYTES) {
             const tamanioEnMb = MAXIMO_TAMANIO_BYTES / 1000000;
-            alert(`El tamaño máximo es ${tamanioEnMb} MB`);
+            const tam = archivo.size / 1000000;
+            Swal.fire(`El tamaño máximo es ${tamanioEnMb} MB y tu imagen pesa ${tam}`, '', 'error')
             target.value = "";
         } else {
             // Create a data URL from the selected image
             const reader = new FileReader();
             reader.onload = (e) => {
-                setPicture(e.target.result);
+                compress(e.target.result, {
+                    width: 200,
+                    type: 'image/png',
+                    max: 200,
+                    min: 20,
+                    quality: 0.8
+                }).then(result => {
+                    setPicture(result);
+                })
             };
             reader.readAsDataURL(archivo);
         }
@@ -57,9 +69,8 @@ const FormEdit = function ({ userSelected, users, setTableSize, setEditPerson })
         e.preventDefault()
         const payload = {
             user: {
-                documentType, _id: numberDocument, firstName,
-                middleName, lastNames, bornDate, gender,
-                email, phone
+                documentType, _id: numberDocument, firstName, middleName, 
+                lastNames, bornDate: cambiarFormatoFecha(bornDate), gender, email, phone
             }, 
             picture: {
                 _id: numberDocument,
@@ -68,18 +79,26 @@ const FormEdit = function ({ userSelected, users, setTableSize, setEditPerson })
         }
         const data = await putRequest('/app', payload)
         if (data != "string") {
-            setTableSize(users.map(user => user._id == userSelected._id ? data.current : user))
-            setEditPerson(false)
+            return Swal.fire('Usuario actualizado', '', 'success').then(() => {
+                console.log(users)
+                setTableSize(users.map(user => user._id == userSelected._id ? data.current : user))
+                console.log(users)
+                setEditPerson(false)
+            })
         }
+        Swal.fire({ icon: 'error', title: 'Oops...', text: data })
     };
 
     const deleteUser = async (e) => {
         e.preventDefault()
         const data = await deleteRequest(`/app/${userSelected._id}`)
         if (data != "string") {
-            setTableSize(users.filter(user => user._id !== userSelected._id))
-            setEditPerson(false)
+            return Swal.fire('Usuario eliminado', '', 'success').then(() => {
+                setTableSize(users.filter(user => user._id !== userSelected._id))
+                setEditPerson(false)
+            })
         }
+        Swal.fire({ icon: 'error', title: 'Oops...', text: data })
     }
 
     return (
@@ -201,7 +220,6 @@ const FormEdit = function ({ userSelected, users, setTableSize, setEditPerson })
                             <img
                                 src={picture}
                                 className="img-fluid"
-                                style={{ height: "10em" }}
                             />
                         </div>
                         <div className="card d-flex w-100 justify-content-center align-items-center ms-5">
